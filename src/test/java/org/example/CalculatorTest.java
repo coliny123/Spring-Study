@@ -1,6 +1,7 @@
 package org.example;
 
 import org.assertj.core.util.Streams;
+import org.example.calculate.PositiveNumber;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,7 +27,7 @@ public class CalculatorTest {
     @ParameterizedTest
     @MethodSource("formulaAndResult")
     void calculateTest(int operand1, String operator, int operand2, int result) {
-        int calculateResult = Calculator.calculate(operand1, operator, operand2);
+        int calculateResult = Calculator.calculate(new PositiveNumber(operand1), operator, new PositiveNumber(operand2));
 
         assertThat(calculateResult).isEqualTo(result);
     }
@@ -38,12 +39,5 @@ public class CalculatorTest {
                 arguments(4, "*", 2, 8),
                 arguments(4, "/", 2, 2)
         );
-    }
-
-    @DisplayName("나눗셈에서 0을 나누는 경우 IllegalArgument 예외를 발생시킨다")
-    @Test
-    void calculateExceptionTest() {
-        assertThatCode(()-> Calculator.calculate(10, "/", 0))
-                .isInstanceOf(IllegalArgumentException.class);
     }
 }
