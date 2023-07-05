@@ -3,30 +3,24 @@ package org.example;
 import java.util.List;
 
 public class GradeCalculator {
-    private final List<Course> courses;
+
+    private final Courses courses;  // 일급 컬렉션
 
     public GradeCalculator(List<Course> courses) {
-        this.courses = courses;
+        this.courses = new Courses(courses);
     }
 
     public double calculateGrade() {
-
         /*
-        이런식으로 사용하면 (학점수 * 교과목 평점)의 합계가 여러군데에서 사용된다면 수정시 이것을 사용한 곳을 다 수정해줘야함 -> 응집도가 약함
-        But 이것을 Course에서 수행한다면? course에게 계산을 넘겨서 Course에서만 수정해주면됨!! -> 응집도가 높음
-        So, getter로 정보 가져와서 처리하기 보다 해당 정보를 가진 객체에게 message 던저서 작업 처리하도록 한다면 변화에 유연해짐!!
+        일급 컬렉션으로 구현시 (학점수 * 교과목 평점)의 합계 부분을 일급 컬렉션에게 위임 가능
+        일급 컬렉션이란 : 지금은 List<>형태로 된, 즉 Course를 여러개 가진 List로 된 Course 정보만 instance변수로 갖는 클래스!!
+                       또다른 변수 있으면 안됨, 해당 정보들만을 가져야, 그리고 해당 정보로 처리할 수 있는 책임들이 해당 일급 컬렉션 밑으로 이동됨
          */
         // (학점수 * 교과목 평점)의 합계
-        double multipliedCreditAndCourseGrade = 0;
-        for(Course course: courses){
-            multipliedCreditAndCourseGrade += course.multiplyCreditAndCourseGrade();
-        }
-
-        // 수강신청 총학점 수
-        int totalCompletedCredit = courses.stream()
-                .mapToInt(Course::getCredit)
-                .sum();
-
-        return multipliedCreditAndCourseGrade / totalCompletedCredit;
+        double totalMultipliedCreditAndCourseGrade = courses.multiplyCreditAndCourseGrade(); // 학점 계산기 --- (학점수×교과목 평점)의 합계작업 전달(작업 위임) ---> 과목(코스)일급 컬렉션
+        // 수강신청 총학점 수                                                                                                                       <----- 과목(코스)
+        int totalCompletedCredit = courses.calculateTotalCompletedCredit(); // 학점 계산기 --- 수강신청 총학점 수 작업 전달(작업 위임) ---> 과목(코스)일급 컬렉션
+        //                                                                                                               <----- 과목(코스)
+        return totalMultipliedCreditAndCourseGrade / totalCompletedCredit;  // <---리턴-- 나누기만 해서 <----- 과목(코스)
     }
 }

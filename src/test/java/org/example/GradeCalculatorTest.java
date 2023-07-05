@@ -19,9 +19,10 @@ public class GradeCalculatorTest {
     // 3rd 동적인 객체를 정적인 타입으로 추상화해서 도메인 모델링 :
     // 이수한 과목 -> 객체지향프로그래밍, 자료구조, 실용중국어 (동적인 객체들) --> 과목(코스)클래스 (정적인 타입으로 추상화)
 
-    // 이수한 과목을 인자로 전달하여 평균학점 계산 요청 ----> 학점 계산기 -----> (학점수×교과목 평점)의 합계 와 -----> 과목(코스)
+    // 핵심 포인트 //
+    // 이수한 과목을 인자로 전달하여 평균학점 계산 요청 ----> 학점 계산기 -----> (학점수×교과목 평점)의 합계 와 -----> 과목(코스) 일급 컬렉션
     //                                                          -----> 수강신청 총학점 수를 요청     -----> 과목(코스)
-    //                                        <----- 나누기만 해서 <----- 과목(코스)
+    //                                        <---리턴-- 나누기만 해서 <----- 과목(코스)
 
     @DisplayName("평균 학점을 계산한다.")
     @Test
@@ -30,8 +31,8 @@ public class GradeCalculatorTest {
                 new Course("자료구조", 3, "A+"),
                 new Course("실용중국어", 3, "A+"));
 
-        GradeCalculator gradeCalculator = new GradeCalculator(courses);
-        double gradeResult = gradeCalculator.calculateGrade();
+        GradeCalculator gradeCalculator = new GradeCalculator(courses); // 이수한 과목을 학점 계산기에게 인자로 전달
+        double gradeResult = gradeCalculator.calculateGrade();  // 평균학점 계산 요청 = 메소드 호출
 
         assertThat(gradeResult).isEqualTo(4.5);
     }
