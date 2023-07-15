@@ -1,7 +1,5 @@
 package org.example;
 
-import opr.example.QueryString;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,12 +12,20 @@ public class QueryStrings {
         String[] queryStringTokens = queryStringLine.split("&");
         Arrays.stream(queryStringTokens)
                 .forEach(queryString -> {
-                    String[] values = queryString.split("=");
+                    String[] values = queryString.split("=");   // key : value로 나눔
                     if (values.length != 2) {
                         throw new IllegalArgumentException("잘못된 QueryString 포멧을 가진 문자열입니다.");
                     }
                     queryStrings.add(new QueryString(values[0], values[1]));
                 });
 
+    }
+
+    public String getValue(String key) {
+        return this.queryStrings.stream()
+                .filter(queryString -> queryString.exists(key))
+                .map(QueryString::getValue)
+                .findFirst()
+                .orElse(null);
     }
 }
