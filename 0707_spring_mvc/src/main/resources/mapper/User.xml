@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.camp.myapp.model.dao.UserDAO">
+
+	<!--  id에 부합하는 사용자 조회 -->
+	<select id="selectUser" parameterType="string" resultType="User">
+		select userId,password,name,email 
+		from userinfo
+		where  userId = #{userId} 
+	</select>
+	
+	<!--  id , pw 에 부합하는 사용자 이름 조회 -->
+	<select id="selectName" parameterType="User" resultType="string">
+		select 	name 
+		from 	userinfo
+		where  	userId = #{userId} 
+		and		password = #{password}
+	</select>
+	
+	<insert id="add" parameterType="User">
+		insert into userinfo(userId,password,name,email) 
+		values(#{userId},#{password},#{name},#{email})
+	</insert>
+	
+	<delete id="deleteUser">
+		delete from userinfo
+		where userId = #{userId}
+	</delete>
+	<update id="updateUser">
+		update userinfo
+		set	password = #{password},
+		email = #{email}
+		where userId = #{userId}
+	</update>
+	<select id="selectUsers" resultType="User">
+		select userId,password,name,email 
+		from userinfo
+	</select>
+</mapper>
+
+
+
+

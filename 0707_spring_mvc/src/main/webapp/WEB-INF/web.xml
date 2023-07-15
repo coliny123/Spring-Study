@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+<!-- 시작할 때 처음 읽어서 설정한다. 설정파일-->
+	 <!-- 파라미터 인코딩 처리해주는 필터 추가 -->	<!-- 주석 내용 -->
+	  <filter>
+	    <filter-name>encodingFilter</filter-name>
+	    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+	    <init-param>
+	      <param-name>encoding</param-name>
+	      <param-value>utf-8</param-value>
+	    </init-param>
+	  </filter>
+	  <filter-mapping>
+	    <filter-name>encodingFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	  </filter-mapping>
+	<!-- model 파트와 view 파트를 나눠서 설계하라 -->
+	<!-- container 2개 생김 C.L.L이 만든것, D.S가 만든 것 각각 beans 가짐 C.L.L에 service DDO이런거 있음, DS에 Controller있음 근데 다른 spring container를 부모자식으로 묶을 수 있다. service를 쓸 수 있음-->
+
+	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>	<!-- 밑의 리스너가 읽어오는 설정 파일이거다. -->
+		<param-value>/WEB-INF/spring/root-context.xml</param-value>
+	</context-param>
+	
+	<!-- Creates the Spring Container shared by all Servlets and Filters --> <!-- 백앤드 상에서 일어나는 앱,세션 시작, 앱,세션 종료, 값 저장 등...의 이벤트 리스너같은 것 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>	<!-- 얘도 container만듬 -->
+	</listener>
+
+	<!-- Processes application requests -->  <!-- 프론트 서블릿이 되도록하고 서블릿 객체도 생성하고 spring container 생성?-->
+	<servlet>
+		<servlet-name>appServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>	<!-- 너가 잃어야하는 contextConfigLocation은 이거야 -->
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value> <!-- 설정파일 여러개일 경우 공백으로 구분해서 나열하면됨 -->
+		</init-param>
+		<load-on-startup>1</load-on-startup>	<!-- tomcat에게 server시작되고 app이 로드되면 이 servlet 초기화해서 준비해놓으라고 말하는 것 1은 순서임 미리 준비되는 건 같음 -->
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>appServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+</web-app>
