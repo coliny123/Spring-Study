@@ -38,6 +38,7 @@ public class CustomWebApplicationServer {
                 logger.info("[CustomWebApplicationServer] client connected");   // 연결되면 log남기기
                 /*
                 step1 - 사용자 요청을 메인 Thread가 처리하도록 한다.
+                step2 - 사용자 요청이 들어올 때마다 Thread를 새로 생성해서 사용자 요청을 처리하도록 한다.
                  */
                 // inputstream과 outputstream 연결
                 try(InputStream in = clientSocket.getInputStream(); OutputStream out = clientSocket.getOutputStream()){
