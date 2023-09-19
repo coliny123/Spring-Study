@@ -4,6 +4,7 @@ import hello.hello_spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+// 컨트롤러는 어쩔 수 없음 이렇게 하는 수밖에
 @Controller
 public class UserController {
 /*
@@ -19,10 +20,34 @@ public class UserController {
             private final UserService userService;
         }
  */
-    public final UserService userService;
 
-    @Autowired  // Dependency Injection
-    public UserController(UserService userService) {    //
+/*
+DI의 3가지 방법:
+필드 주입, setter 주입, 생성자 주입
+의존관계가 실행중에 동적으로 변하는경우는 거의 없으므로 생성자 주입을 권장
+@Autowired를 통한 DI는 스프링이 관리하는 객체(스프링 빈 등록)에서만 동작한다. 스프링 빈으로 등록하지 않고 내가 직접 생성한 객체에서는 동작하지 않는다.
+정형화 되지 않거나, 상황에 따라 구현 클래스를 변경해야 하면 설정을 통해 스프링 빈으로 등록한다.
+-> UserRepository interface로 설계하고 구현을 MemoryUserRepository 한 걸 나중에 코드 수정 없이 다른 repository로 바꿔치기 하는 상황!
+-> SpringConfig에서 MemoryUserRepository만 DbUserRepository로 바꿔주면 됨!!!
+ */
+
+
+//    1. setter DI
+//    -> 단점: 누군가가 UserController를 호출했을 때 setter가 public으로 열려있어야 함(노출)
+//    public UserService userService;
+//
+//    @Autowired
+//    public void setUserController(UserService userService) {
+//        this.userService = userService;
+//    }
+
+//    2. 필드 DI
+//    @Autowired public UserService userService;
+
+//    3. 생성자 DI
+    public final UserService userService;
+    @Autowired
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 }

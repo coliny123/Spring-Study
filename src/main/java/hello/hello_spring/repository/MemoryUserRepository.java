@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Repository
+
 public class MemoryUserRepository implements UserRepository{
     // 메모리에 저장하니까 Map 사용 key: id, value: User,
     private static Map<Long, User> store = new HashMap<>(); // HashMap은 동시성 문제 존재해서 실무에서 공유 변수는 ConcurrentHashMap 사용!
