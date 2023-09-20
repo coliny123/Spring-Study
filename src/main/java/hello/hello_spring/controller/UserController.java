@@ -4,8 +4,11 @@ import hello.hello_spring.domain.User;
 import hello.hello_spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 // 컨트롤러는 어쩔 수 없음 이렇게 하는 수밖에
 @Controller
@@ -66,5 +69,12 @@ DI의 3가지 방법:
 
         userService.join(user);
         return "redirect:/";
+    }
+
+    @GetMapping("/users")
+    public String list(Model model){
+        List<User> users = userService.findUsers();
+        model.addAttribute("users", users);
+        return "users/userList";
     }
 }
