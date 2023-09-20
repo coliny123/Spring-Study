@@ -1,8 +1,11 @@
 package hello.hello_spring.controller;
 
+import hello.hello_spring.domain.User;
 import hello.hello_spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 // 컨트롤러는 어쩔 수 없음 이렇게 하는 수밖에
 @Controller
@@ -49,5 +52,19 @@ DI의 3가지 방법:
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/users/new")
+    public String createForm(){
+        return "users/createUserForm";
+    }
+
+    @PostMapping("/users/new")
+    public String create(UserForm form){
+        User user = new User();
+        user.setName(form.getName());
+
+        userService.join(user);
+        return "redirect:/";
     }
 }
