@@ -1,10 +1,9 @@
 package hello.hello_spring;
 
-import hello.hello_spring.repository.JdbcTemplateUserRepository;
-import hello.hello_spring.repository.JdbcUserRepository;
-import hello.hello_spring.repository.MemoryUserRepository;
-import hello.hello_spring.repository.UserRepository;
+import hello.hello_spring.repository.*;
 import hello.hello_spring.service.UserService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,11 +13,11 @@ import javax.sql.DataSource;
 @Configuration
 public class SpringConfig {
 
-    private DataSource dataSource;
-
-    @Autowired
-    public SpringConfig(DataSource dataSource) {
+    private final DataSource dataSource;
+    private final EntityManager em;
+    public SpringConfig(DataSource dataSource, EntityManager em) {
         this.dataSource = dataSource;
+        this.em = em;
     }
 
     @Bean
@@ -30,7 +29,8 @@ public class SpringConfig {
     public UserRepository userRepository(){
 //        return new MemoryUserRepository();
 //        return new JdbcUserRepository(dataSource);
-        return new JdbcTemplateUserRepository(dataSource);
+//        return new JdbcTemplateUserRepository(dataSource);
+        return new JpaUserRepository(em);
         /*
         개방-폐쇄 원칙(OCP, Open-Closed Principle)
         확장에는 열려있고, 수정, 변경에는 닫혀있다.
