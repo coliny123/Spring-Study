@@ -1,5 +1,6 @@
 package hello.hello_spring;
 
+import hello.hello_spring.repository.JdbcTemplateUserRepository;
 import hello.hello_spring.repository.JdbcUserRepository;
 import hello.hello_spring.repository.MemoryUserRepository;
 import hello.hello_spring.repository.UserRepository;
@@ -28,7 +29,8 @@ public class SpringConfig {
     @Bean
     public UserRepository userRepository(){
 //        return new MemoryUserRepository();
-        return new JdbcUserRepository(dataSource);
+//        return new JdbcUserRepository(dataSource);
+        return new JdbcTemplateUserRepository(dataSource);
         /*
         개방-폐쇄 원칙(OCP, Open-Closed Principle)
         확장에는 열려있고, 수정, 변경에는 닫혀있다.
