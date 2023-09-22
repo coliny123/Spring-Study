@@ -1,5 +1,6 @@
 package hello.hello_spring;
 
+import hello.hello_spring.aop.TimeTraceAop;
 import hello.hello_spring.repository.*;
 import hello.hello_spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,11 @@ public class SpringConfig {
     @Autowired  // 생성자가 1개인 경우 생략해도 됨
     public SpringConfig(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Bean
+    public TimeTraceAop timeTraceAop(){
+        return new TimeTraceAop();
     }
 
 //    Spring Data JPA를 사용할 경우 구현체(SpringDataJpaUserRepository)를 알아서 만들어서 빈으로 등록해줌
